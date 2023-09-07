@@ -1,0 +1,12 @@
+div.upload-wrap{
+    padding: 250px!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5)!important;
+}
+
+div.upload-main{
+    background-color: #3A3B3C;
+    border-radius: 10px;
+}
