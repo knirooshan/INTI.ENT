@@ -6,7 +6,6 @@
     <title>Media Upload</title>
 
     <style>
-
         div.upload-wrap {
             height: 100%;
             display: flex;
@@ -18,11 +17,66 @@
             border-radius: 10px;
         }
 
-        .upload-select{
+        .upload-select {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 25px;
+            gap: 50px;
+        }
+
+        .select-button {
+            padding: 30px 50px;
+            border-radius: 25px;
+            background-color: #04abf2;
+            border: none;
+        }
+
+        .button-icon {
+            width: 50px;
+        }
+
+        .video-upload {
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .file-upload-wrapper {
+            display: flex;
+            gap: 50px;
+            justify-content: center;
+        }
+
+        .field-label {
+            font-size: 18px;
+        }
+
+        .form-field input {
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            padding: 20px;
+        }
+
+        .submit-button {
+            padding: 20px;
+            color: #fff;
+            background-color: #04abf2;
+            border: none;
+            border-radius: 10px;
+            margin: 25px 0px;
+            font-size: 18px;
+        }
+
+        .form-container{
+            display: none;
         }
 
     </style>
@@ -30,19 +84,125 @@
 
 <body>
     <div class="upload-wrap">
-            <h1>What are you uploading?</h1>
-            <div class="upload-select">
-                <label for="" class="upload-label">
-                    <input type="radio" name="select" id="video" class="upload-radio">
-                </label>
-                <label for="" class="upload-label">
-                    <input type="radio" name="select" id="comic" class="upload-radio">
-                </label>
-                <label for="" class="upload-label">
-                    <input type="radio" name="select" id="art" class="upload-radio">
-                </label>
+        <h1>What are you uploading?</h1>
+        <div class="upload-select">
+            <button class="select-button" onclick="showForm('video-upload')">
+                <img src="themes/youplay/layout/upload-video/video.png" class="button-icon">
+            </button>
+            <button class="select-button" onclick="showForm('gallery-upload')">
+                <img src="themes/youplay/layout/upload-video/gallery.png" class="button-icon">
+            </button>
+            <button class="select-button" onclick="showForm('music-upload')">
+                <img src="themes/youplay/layout/upload-video/musical-note.png" class="button-icon">
+            </button>
+        </div>
+
+        <form class="video-upload form-container" name="video-upload" id="video-upload">
+            <div class="file-upload-wrapper">
+                <div class="form-field">
+                    <label for="video-input" class="field-label">Select Video File</label>
+                    <input type="file" name="video-input" id="video-input">
+                </div>
+                <div class="form-field">
+                    <label for="video-input" class="field-label">Select Thumbnail</label>
+                    <input type="file" name="video-input" id="video-input">
+                </div>
             </div>
+            <div class="form-field">
+                <label for="video-input" class="field-label">Video Title</label>
+                <input type="text" name="video-input" id="video-input">
+            </div>
+            <div class="form-field">
+                <label for="video-input" class="field-label">Video Description</label>
+                <input type="text" name="video-input" id="video-input">
+            </div>
+            <div class="form-field">
+                <label for="video-input" class="field-label">Add Tags (seperated by " , ")</label>
+                <input type="text" name="video-input" id="video-input">
+            </div>
+            <div class="form-field">
+                <button type="submit" id="video-submit" class="submit-button">Upload</button>
+            </div>
+
+        </form>
+
+        <form action="" class="gallery-upload form-container" id="gallery-upload" name="gallery-upload">
+            <div class="file-upload-wrapper">
+                <div class="form-field">
+                    <label for="video-input" class="field-label">Select Image Files</label>
+                    <input type="file" name="video-input" id="video-input">
+                </div>
+                <div class="form-field">
+                    <label for="video-input" class="field-label">Select Thumbnail</label>
+                    <input type="file" name="video-input" id="video-input">
+                </div>
+            </div>
+            <div class="form-field">
+                <label for="video-input" class="field-label">Title</label>
+                <input type="text" name="video-input" id="video-input">
+            </div>
+            <div class="form-field">
+                <label for="video-input" class="field-label">Description</label>
+                <input type="text" name="video-input" id="video-input">
+            </div>
+            <div class="form-field">
+                <label for="video-input" class="field-label">Add Tags (seperated by " , ")</label>
+                <input type="text" name="video-input" id="video-input">
+            </div>
+            <div class="form-field">
+                <button type="submit" id="gallery-submit" class="submit-button">Upload</button>
+            </div>
+        </form>
+
+        <form action="" class="music-upload form-container" id="music-upload" name="music-upload">
+            <div class="file-upload-wrapper">
+                <div class="form-field">
+                    <label for="video-input" class="field-label">Select Music File</label>
+                    <input type="file" name="video-input" id="video-input">
+                </div>
+                <div class="form-field">
+                    <label for="video-input" class="field-label">Select Thumbnail</label>
+                    <input type="file" name="video-input" id="video-input">
+                </div>
+            </div>
+            <div class="form-field">
+                <label for="video-input" class="field-label">Title</label>
+                <input type="text" name="video-input" id="video-input">
+            </div>
+            <div class="form-field">
+                <label for="video-input" class="field-label">Description</label>
+                <input type="text" name="video-input" id="video-input">
+            </div>
+            <div class="form-field">
+                <label for="video-input" class="field-label">Add Tags (seperated by " , ")</label>
+                <input type="text" name="video-input" id="video-input">
+            </div>
+            <div class="form-field">
+                <button type="submit" id="music-submit" class="submit-button">Upload</button>
+            </div>
+        </form>
+
     </div>
+
+    <script>
+        function showForm(formName) {
+            // Hide all forms
+            var forms = document.querySelectorAll('.form-container');
+            forms.forEach(function (form) {
+                form.style.display = 'none';
+            });
+
+            // Show the selected form
+            var selectedForm = document.getElementById(formName);
+            if (selectedForm) {
+                selectedForm.style.display = 'block';
+            }
+        }
+
+        // Show the default form (video upload) when the page loads
+        showForm('video-upload');
+    </script>
+
 </body>
 
 </html>
