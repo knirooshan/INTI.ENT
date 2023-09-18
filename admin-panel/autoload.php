@@ -615,90 +615,6 @@ $old_notifications = $db->where('recipient_id',0)->where('admin',1)->where('seen
                     </li>
                     <?php } ?>
 
-                    <?php if ($pt->user->admin == 1 || CheckHaveMultiPermission(['payment-settings','ads-settings','bank-receipts','manage-video-ads','manage-website-ads','manage-user-ads','payment-requests','manage-currencies','earnings'])) { ?>
-                    <li <?php echo ($page == 'payment-settings' || $page == 'ads-settings' || $page == 'bank-receipts' || $page == 'manage-video-ads' || $page == 'create-video-ad' || $page == 'manage-website-ads' || $page == 'manage-user-ads' || $page == 'earnings' || $page == 'payment-requests') ? 'class="open"' : ''; ?>>
-                        <a href="#">
-                            <span class="nav-link-icon">
-                                <i class="material-icons">attach_money</i>
-                            </span>
-                            <span>Payments & Ads</span>
-                        </a>
-                        <ul <?php echo ($page == 'payment-settings' || $page == 'ads-settings' || $page == 'bank-receipts' || $page == 'manage-video-ads' || $page == 'create-video-ad' || $page == 'manage-website-ads' || $page == 'manage-user-ads' || $page == 'payment-requests' || $page == 'manage-currencies') ? 'style="display: block;"' : ''; ?>>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('payment-settings')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'payment-settings') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('payment-settings'); ?>" data-ajax="?path=payment-settings">Payment Configuration</a>
-                            </li>
-                            <?php } ?>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('ads-settings')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'ads-settings') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('ads-settings'); ?>" data-ajax="?path=ads-settings">Advertisement Settings</a>
-                            </li>
-                            <?php } ?>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('bank-receipts')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'bank-receipts') ? 'class="active"' : ''; ?>  href="<?php echo PT_LoadAdminLinkSettings('bank-receipts'); ?>" data-ajax="?path=bank-receipts">
-                                    Manage Bank Receipts
-                                </a>
-                            </li>
-                            <?php } ?>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('manage-video-ads')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'manage-video-ads' || $page ==  'create-video-ad') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('manage-video-ads'); ?>" data-ajax="?path=manage-video-ads">Manage Video Ads</a>
-                            </li>
-                            <?php } ?>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('manage-website-ads')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'manage-website-ads') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('manage-website-ads'); ?>" data-ajax="?path=manage-website-ads">Manage Website Ads</a>
-                            </li>
-                            <?php } ?>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('manage-user-ads')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'manage-user-ads') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('manage-user-ads'); ?>" data-ajax="?path=manage-user-ads">Manage User Ads</a>
-                            </li>
-                            <?php } ?>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('payment-requests')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'payment-requests') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('payment-requests'); ?>" data-ajax="?path=payment-requests">Payment Requests</a>
-                            </li>
-                            <?php } ?>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('manage-currencies')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'manage-currencies') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('manage-currencies'); ?>" data-ajax="?path=manage-currencies">Manage Currencies</a>
-                            </li>
-                            <?php } ?>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('earnings')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'earnings') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('earnings'); ?>" data-ajax="?path=earnings">Earnings</a>
-                            </li>
-                            <?php } ?>
-                        </ul>
-                    </li>
-                    <?php } ?>
-
-                    <?php if ($pt->user->admin == 1 || CheckHaveMultiPermission(['add-language','manage-languages'])) { ?>
-
-                    <li <?php echo ($page == 'manage-languages' || $page == 'add-language' || $page == 'edit-lang') ? 'class="open"' : ''; ?>>
-                        <a href="#">
-                            <span class="nav-link-icon">
-                                <i class="material-icons">language</i>
-                            </span>
-                            <span>Languages</span>
-                        </a>
-                        <ul <?php echo ($page == 'manage-languages' || $page == 'add-language' || $page == 'edit-lang') ? 'style="display: block;"' : ''; ?>>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('add-language')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'add-language') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('add-language'); ?>" data-ajax="?path=add-language">Add New Language & Keys</a>
-                            </li>
-                            <?php } ?>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('manage-languages')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'manage-languages' || $page == 'edit-lang') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('manage-languages'); ?>" data-ajax="?path=manage-languages">Manage Languages</a>
-                            </li>
-                            <?php } ?>
-                        </ul>
-                    </li>
-                    <?php } ?>
-
 
                     <?php if ($pt->user->admin == 1 || CheckHaveMultiPermission(['manage-users','manage-profile-fields','verification-requests','monetization-requests'])) { ?>
 
@@ -784,58 +700,6 @@ $old_notifications = $db->where('recipient_id',0)->where('admin',1)->where('seen
                     <?php } ?>
 
 
-
-
-                    <?php if ($pt->user->admin == 1 || CheckHaveMultiPermission(['manage-movies','manage-movies-category'])) { ?>
-
-                    <li <?php echo ($page == 'manage-movies' || $page == 'manage-movies-category') ? 'class="open"' : ''; ?>>
-                        <a href="#">
-                            <span class="nav-link-icon">
-                                <i class="material-icons">video_library</i>
-                            </span>
-                            <span>Movies</span>
-                        </a>
-                        <ul <?php echo ($page == 'manage-movies' || $page == 'manage-movies-category') ? 'style="display: block;"' : ''; ?>>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('manage-movies')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'manage-movies') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('manage-movies'); ?>" data-ajax="?path=manage-movies">Manage Movies</a>
-                            </li>
-                            <?php } ?>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('manage-movies-category')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'manage-movies-category') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('manage-movies-category'); ?>" data-ajax="?path=manage-movies-category">Manage Categories</a>
-                            </li>
-                            <?php } ?>
-                        </ul>
-                    </li>
-                    <?php } ?>
-
-
-                    <?php if ($pt->user->admin == 1 || CheckHaveMultiPermission(['create-article','manage-articles'])) { ?>
-
-                    <li <?php echo ($page == 'manage-articles' || $page == 'create-article' || $page == 'edit-article') ? 'class="open"' : ''; ?>>
-                        <a href="#">
-                            <span class="nav-link-icon">
-                                <i class="material-icons">library_books</i>
-                            </span>
-                            <span>Articles</span>
-                        </a>
-                        <ul <?php echo ($page == 'manage-articles' || $page == 'create-article' || $page == 'edit-article') ? 'style="display: block;"' : ''; ?>>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('create-article')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'create-article') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('create-article'); ?>" >Create New Article</a>
-                            </li>
-                            <?php } ?>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('manage-articles')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'manage-articles' || $page == 'edit-article') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('manage-articles'); ?>" data-ajax="?path=manage-articles">Manage Articles</a>
-                            </li>
-                            <?php } ?>
-                        </ul>
-                    </li>
-                    <?php } ?>
-
-
                     <?php if ($pt->user->admin == 1 || CheckHaveMultiPermission(['manage_categories','manage_sub_categories'])) { ?>
 
                     <li <?php echo ($page == 'manage_categories' || $page == 'manage_sub_categories') ? 'class="open"' : ''; ?>>
@@ -854,34 +718,6 @@ $old_notifications = $db->where('recipient_id',0)->where('admin',1)->where('seen
                             <?php if ($pt->user->admin == 1 || CheckHavePermission('manage_sub_categories')) { ?>
                             <li>
                                 <a <?php echo ($page == 'manage_sub_categories') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('manage_sub_categories'); ?>" data-ajax="?path=manage_sub_categories">Manage Sub Categories</a>
-                            </li>
-                            <?php } ?>
-                        </ul>
-                    </li>
-                    <?php } ?>
-
-
-                    <?php if ($pt->user->admin == 1 || CheckHaveMultiPermission(['prosys-settings','manage-payments'])) { ?>
-
-
-
-
-                    <li <?php echo ($page == 'prosys-settings' || $page == 'manage-payments') ? 'class="open"' : ''; ?>>
-                        <a href="#">
-                            <span class="nav-link-icon">
-                                <i class="material-icons">star</i>
-                            </span>
-                            <span>Pro System</span>
-                        </a>
-                        <ul <?php echo ($page == 'prosys-settings' || $page == 'manage-payments') ? 'style="display: block;"' : ''; ?>>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('prosys-settings')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'prosys-settings') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('prosys-settings'); ?>" data-ajax="?path=prosys-settings">Pro System Settings</a>
-                            </li>
-                            <?php } ?>
-                            <?php if ($pt->user->admin == 1 || CheckHavePermission('manage-payments')) { ?>
-                            <li>
-                                <a <?php echo ($page == 'manage-payments') ? 'class="active"' : ''; ?> href="<?php echo PT_LoadAdminLinkSettings('manage-payments'); ?>" data-ajax="?path=manage-payments">Recent Payments</a>
                             </li>
                             <?php } ?>
                         </ul>
@@ -1121,15 +957,6 @@ $old_notifications = $db->where('recipient_id',0)->where('admin',1)->where('seen
                     </li>
 
                     <li>
-                        <a <?php echo ($page == 'changelog') ? 'class="active"' : ''; ?>  href="<?php echo PT_LoadAdminLinkSettings('changelog'); ?>" data-ajax="?path=changelog">
-                            <span class="nav-link-icon">
-                                <i class="material-icons">update</i>
-                            </span>
-                            <span>Changelogs</span>
-                        </a>
-                    </li>
-
-                    <li>
                         <a href="http://docs.playtubescript.com" target="_blank">
                             <span class="nav-link-icon">
                                 <i class="material-icons">more_vert</i>
@@ -1140,7 +967,6 @@ $old_notifications = $db->where('recipient_id',0)->where('admin',1)->where('seen
                      <a class="pow_link" href="https://studiointi.com/" target="_blank">
                         <p>Powered by</p>
                         <img src="../themes/youplay/img/logo-light.png?cache=<?php echo($pt->config->logo_cache) ?>">
-                        <b class="badge">v<?php echo $config['script_version'];?></b>
                     </a>
                 </ul>
             </div>
