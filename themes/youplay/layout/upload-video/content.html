@@ -81,6 +81,10 @@
     </style>
 </head>
 
+<?php
+
+?>
+
 <body>
     <div class="upload-wrap">
         <h1>What are you uploading?</h1>
@@ -97,6 +101,7 @@
         </div>
 
         <form class="video-upload form-container" name="video-upload" id="video-upload">
+            <input type="hidden" name="video_hidden" value="1">
             <div class="file-upload-wrapper">
                 <div class="form-field">
                     <label for="video-input" class="field-label">Select Video File</label>
@@ -126,6 +131,7 @@
         </form>
 
         <form action="" class="gallery-upload form-container" id="gallery-upload" name="gallery-upload">
+            <input type="hidden" name="gallery_hidden" value="1">
             <div class="file-upload-wrapper">
                 <div class="form-field">
                     <label for="gallery-input" class="field-label">Select Image Files</label>
@@ -154,6 +160,7 @@
         </form>
 
         <form action="" class="music-upload form-container" id="music-upload" name="music-upload">
+            <input type="hidden" name="music_hidden" value="1">
             <div class="file-upload-wrapper">
                 <div class="form-field">
                     <label for="music-input" class="field-label">Select Music File</label>
@@ -223,52 +230,6 @@
 
             return true;
         }
-
-        // Function to handle form submission
-        function handleFormSubmit(formId) {
-            const form = document.getElementById(formId);
-
-            // Check if the form is valid
-            if (!validateForm(form)) {
-                return;
-            }
-
-            // Create a FormData object to send the form data
-            const formData = new FormData(form);
-
-            // Send the form data to handle-upload.php using fetch
-            fetch('../themes/youplay/layout/upload-video/handle-upload.php', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data.success);
-                    if (data.success) {
-                        // Handle success, e.g., show a success message
-                        alert('Upload successful!');
-                    } else {
-                        // Handle failure, e.g., display an error message
-                        document.getElementById('error-message').innerText = 'Upload failed.';
-                    }
-                })
-                .catch(error => {
-                    // Handle errors, e.g., network issues
-                    console.error('Error:', error);
-                    document.getElementById('error-message').innerText = 'An error occurred.';
-                });
-        }
-
-        // Add event listeners to submit buttons
-        const submitButtons = document.querySelectorAll('.submit-button');
-        submitButtons.forEach(button => {
-            button.addEventListener('click', function (event) {
-                event.preventDefault();
-                const formId = this.getAttribute('data-form-id');
-                handleFormSubmit(formId);
-            });
-        });
-
 
     </script>
 
