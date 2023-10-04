@@ -1,8 +1,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Media Upload</title>
 
     <style>
@@ -13,7 +13,7 @@
             gap: 25px;
             align-items: center;
             justify-content: center;
-            background-color: #3A3B3C;
+            background-color: #3a3b3c;
             border-radius: 10px;
         }
 
@@ -83,6 +83,128 @@
 
 <?php
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $videoForm = $_POST['video_hidden'];
+    $galleryForm = $_POST['gallery_hidden'];
+    $musicForm = $_POST['music_hidden'];
+
+    if ($videoForm == 1) {
+        // Define the target directory for video uploads
+        $uploadDir = 'upload/videos/';
+
+        // Create the current year and month directories if they don't exist
+        $currentYear = date('Y');
+        $currentMonth = date('m');
+        $targetDir = $uploadDir . $currentYear . '/' . $currentMonth . '/';
+
+        if (!is_dir($targetDir)) {
+            // Create the year directory if it doesn't exist
+            if (!is_dir($uploadDir . $currentYear)) {
+                mkdir($uploadDir . $currentYear);
+            }
+
+            // Create the month directory
+            mkdir($targetDir);
+        }
+
+        // Handle the video file upload
+
+        $videoFile = $_FILES['video-input'];
+        $thumbnailFile = $_FILES['video-thumb-input'];
+        $videoTitle = $_POST['video-title-input'];
+        $videoDescription = $_POST['video-desc-input'];
+        $videoTags = $_POST['video-tag-input'];
+
+        // Generate a unique filename for the video and thumbnail
+        $videoFileExtension = pathinfo($videoFile['name'], PATHINFO_EXTENSION);
+        $thumbnailFileExtension = pathinfo($thumbnailFile['name'], PATHINFO_EXTENSION);
+
+        $videoFileName = uniqid() . '.' . $videoFileExtension;
+        $thumbnailFileName = uniqid() . '.' . $thumbnailFileExtension;
+
+        // Define the paths for video and thumbnail
+        $videoPath = $targetDir . $videoFileName;
+        $thumbnailPath = $targetDir . $thumbnailFileName;
+
+
+        // Move the uploaded files to the target directory
+        if (move_uploaded_file($videoFile['tmp_name'], $videoPath) && move_uploaded_file($thumbnailFile['tmp_name'], $thumbnailPath)) {
+
+
+
+            // Redirect or display a success message to the user
+            echo "Upload successful!";
+        } else {
+            // Handle upload errors
+            echo "Upload failed!";
+        }
+    }
+
+    if ($galleryForm == 2) {
+
+        // Define the target directory for gallery image uploads
+        $galleryUploadDir = 'upload/photos/';
+
+        // Create the current year and month directories if they don't exist
+        $galleryCurrentYear = date('Y');
+        $galleryCurrentMonth = date('m');
+        $galleryTargetDir = $galleryUploadDir . $galleryCurrentYear . '/' . $galleryCurrentMonth . '/';
+
+        if (!is_dir($galleryTargetDir)) {
+            // Create the year directory if it doesn't exist
+            if (!is_dir($galleryUploadDir . $galleryCurrentYear)) {
+                mkdir($galleryUploadDir . $galleryCurrentYear);
+            }
+
+            // Create the month directory
+            mkdir($galleryTargetDir);
+        }
+
+        $galleryImages = $_FILES['gallery-input'];
+        $thumbnail = $_FILES['img-thumb-input'];
+
+        // Generate a unique folder name for this gallery
+        $galleryFolderName = uniqid();
+        $galleryFolderPath = $galleryTargetDir . $galleryFolderName . '/';
+
+        // Create a dedicated folder for this gallery
+        mkdir($galleryFolderPath);
+
+        foreach ($galleryImages['tmp_name'] as $key => $tmpName) {
+            // Generate a unique filename for each image
+            $galleryImageFileExtension = pathinfo($galleryImages['name'][$key], PATHINFO_EXTENSION);
+            $galleryImageFileName = uniqid() . '.' . $galleryImageFileExtension;
+
+            // Define the path for the image within the gallery folder
+            $galleryImagePath = $galleryFolderPath . $galleryImageFileName;
+
+            // Move the uploaded image to the target directory
+            if (move_uploaded_file($tmpName, $galleryImagePath)) {
+                // Handle successful image upload, e.g., store image path in a database if needed
+            } else {
+                // Handle image upload errors
+            }
+        }
+
+        // Generate a unique filename for the thumbnail
+        $thumbnailFileExtension = pathinfo($thumbnail['name'], PATHINFO_EXTENSION);
+        $thumbnailFileName = uniqid() . '.' . $thumbnailFileExtension;
+
+        // Define the path for the thumbnail within the gallery folder
+        $thumbnailPath = $galleryFolderPath . $thumbnailFileName;
+
+        // Move the uploaded thumbnail to the target directory
+        if (move_uploaded_file($thumbnail['tmp_name'], $thumbnailPath)) {
+            // Handle successful thumbnail upload, e.g., associate it with the gallery
+        } else {
+            // Handle thumbnail upload errors
+        }
+    }
+
+    if ($musicForm == 3) {
+    }
+}
+
 ?>
 
 <body>
@@ -90,139 +212,150 @@
         <h1>What are you uploading?</h1>
         <div class="upload-select">
             <button class="select-button" onclick="showForm('video-upload')">
-                <img src="../themes/youplay/layout/upload-video/video.png" class="button-icon">
+                <img src="../themes/youplay/layout/upload-video/video.png" class="button-icon" />
             </button>
             <button class="select-button" onclick="showForm('gallery-upload')">
-                <img src="../themes/youplay/layout/upload-video/gallery.png" class="button-icon">
+                <img src="../themes/youplay/layout/upload-video/gallery.png" class="button-icon" />
             </button>
             <button class="select-button" onclick="showForm('music-upload')">
-                <img src="../themes/youplay/layout/upload-video/musical-note.png" class="button-icon">
+                <img src="../themes/youplay/layout/upload-video/musical-note.png" class="button-icon" />
             </button>
         </div>
 
-        <form class="video-upload form-container" name="video-upload" id="video-upload">
-            <input type="hidden" name="video_hidden" value="1">
+        <form class="video-upload form-container" name="video-upload" id="video-upload" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="video_hidden" value="1" />
             <div class="file-upload-wrapper">
                 <div class="form-field">
                     <label for="video-input" class="field-label">Select Video File</label>
-                    <input type="file" name="video-input" id="video-input" accept="video/*">
+                    <input type="file" name="video-input" id="video-input" accept="video/*" />
                 </div>
                 <div class="form-field">
                     <label for="thumb-input" class="field-label">Select Thumbnail</label>
-                    <input type="file" name="video-thumb-input" id="thumb-input" accept="image/*">
+                    <input type="file" name="video-thumb-input" id="thumb-input" accept="image/*" />
                 </div>
             </div>
             <div class="form-field">
                 <label for="title-input" class="field-label">Video Title</label>
-                <input type="text" name="video-title-input" id="title-input">
+                <input type="text" name="video-title-input" id="title-input" />
             </div>
             <div class="form-field">
                 <label for="desc-input" class="field-label">Video Description</label>
-                <input type="text" name="video-desc-input" id="desc-input">
+                <input type="text" name="video-desc-input" id="desc-input" />
             </div>
             <div class="form-field">
                 <label for="tag-input" class="field-label">Add Tags (seperated by " , ")</label>
-                <input type="text" name="video-tag-input" id="tag-input">
+                <input type="text" name="video-tag-input" id="tag-input" />
             </div>
             <div class="form-field">
-                <button type="submit" id="video-submit" class="submit-button" data-form-id="video-upload">Upload</button>
+                <button type="submit" id="video-submit" class="submit-button" data-form-id="video-upload">
+                    Upload
+                </button>
             </div>
-
         </form>
 
-        <form action="" class="gallery-upload form-container" id="gallery-upload" name="gallery-upload">
-            <input type="hidden" name="gallery_hidden" value="1">
+        <form action="" class="gallery-upload form-container" id="gallery-upload" name="gallery-upload" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="gallery_hidden" value="2" />
             <div class="file-upload-wrapper">
                 <div class="form-field">
                     <label for="gallery-input" class="field-label">Select Image Files</label>
-                    <input type="file" name="gallery-input" id="gallery-input" accept="image/*" multiple>
+                    <input type="file" name="gallery-input[]" id="gallery-input" accept="image/*" multiple />
                 </div>
                 <div class="form-field">
                     <label for="img-thumb-input" class="field-label">Select Thumbnail</label>
-                    <input type="file" name="img-thumb-input" id="img-thumb-input" accept="image/*">
+                    <input type="file" name="img-thumb-input" id="img-thumb-input" accept="image/*" />
                 </div>
             </div>
             <div class="form-field">
                 <label for="img-title-input" class="field-label">Title</label>
-                <input type="text" name="img-title-input" id="img-title-input">
+                <input type="text" name="img-title-input" id="img-title-input" />
             </div>
             <div class="form-field">
                 <label for="img-desc-input" class="field-label">Description</label>
-                <input type="text" name="img-desc-input" id="img-desc-input">
+                <input type="text" name="img-desc-input" id="img-desc-input" />
             </div>
             <div class="form-field">
                 <label for="img-tag-input" class="field-label">Add Tags (seperated by " , ")</label>
-                <input type="text" name="img-tag-input" id="img-tag-input">
+                <input type="text" name="img-tag-input" id="img-tag-input" />
             </div>
             <div class="form-field">
-                <button type="submit" id="gallery-submit" class="submit-button" data-form-id="gallery-upload">Upload</button>
+                <button type="submit" id="gallery-submit" class="submit-button" data-form-id="gallery-upload">
+                    Upload
+                </button>
             </div>
         </form>
 
-        <form action="" class="music-upload form-container" id="music-upload" name="music-upload">
-            <input type="hidden" name="music_hidden" value="1">
+        <form action="" class="music-upload form-container" id="music-upload" name="music-upload" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="music_hidden" value="3" />
             <div class="file-upload-wrapper">
                 <div class="form-field">
                     <label for="music-input" class="field-label">Select Music File</label>
-                    <input type="file" name="music-input" id="music-input" accept="audio/*">
+                    <input type="file" name="music-input" id="music-input" accept="audio/*" />
                 </div>
                 <div class="form-field">
                     <label for="music-thumb-input" class="field-label">Select Thumbnail</label>
-                    <input type="file" name="music-thumb-input" id="music-thumb-input" accept="image/*">
+                    <input type="file" name="music-thumb-input" id="music-thumb-input" accept="image/*" />
                 </div>
             </div>
             <div class="form-field">
                 <label for="music-title-input" class="field-label">Title</label>
-                <input type="text" name="music-title-input" id="music-title-input">
+                <input type="text" name="music-title-input" id="music-title-input" />
             </div>
             <div class="form-field">
                 <label for="music-desc-input" class="field-label">Description</label>
-                <input type="text" name="music-desc-input" id="music-desc-input">
+                <input type="text" name="music-desc-input" id="music-desc-input" />
             </div>
             <div class="form-field">
                 <label for="music-tag-input" class="field-label">Add Tags (seperated by " , ")</label>
-                <input type="text" name="music-tag-input" id="music-tag-input">
+                <input type="text" name="music-tag-input" id="music-tag-input" />
             </div>
             <div class="form-field">
-                <button type="submit" id="music-submit" class="submit-button" data-form-id="music-upload">Upload</button>
+                <button type="submit" id="music-submit" class="submit-button" data-form-id="music-upload">
+                    Upload
+                </button>
             </div>
         </form>
 
-        <div id="error-message" style="color: red; margin-bottom: 25px;"></div>
-
+        <div id="error-message" style="color: red; margin-bottom: 25px"></div>
     </div>
 
     <script>
         function showForm(formName) {
             // Hide all forms
-            var forms = document.querySelectorAll('.form-container');
-            forms.forEach(function (form) {
-                form.style.display = 'none';
+            var forms = document.querySelectorAll(".form-container");
+            forms.forEach(function(form) {
+                form.style.display = "none";
             });
 
             // Show the selected form
             var selectedForm = document.getElementById(formName);
             if (selectedForm) {
-                selectedForm.style.display = 'block';
+                selectedForm.style.display = "block";
             }
         }
 
         // Show the default form (video upload) when the page loads
-        showForm('video-upload');
+        showForm("video-upload");
 
         // Function to validate the form
         function validateForm(form) {
             // Reset previous error messages
-            document.getElementById('error-message').innerText = '';
+            document.getElementById("error-message").innerText = "";
 
             // Get form elements
             const mediaInput = document.querySelector('input[type="file"]');
-            const titleInput = document.querySelector('input[name*="-title-input"]');
+            const titleInput = document.querySelector(
+                'input[name*="-title-input"]'
+            );
             const descInput = document.querySelector('input[name*="-desc-input"]');
 
             // Check if all required fields are filled
-            if (mediaInput.files.length === 0 || !titleInput.value || !descInput.value) {
-                document.getElementById('error-message').innerText = 'All fields are required.';
+            if (
+                mediaInput.files.length === 0 ||
+                !titleInput.value ||
+                !descInput.value
+            ) {
+                document.getElementById("error-message").innerText =
+                    "All fields are required.";
                 return false;
             }
 
@@ -230,9 +363,7 @@
 
             return true;
         }
-
     </script>
-
 </body>
 
 </html>
