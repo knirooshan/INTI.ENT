@@ -181,6 +181,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Move the uploaded image to the target directory
             if (move_uploaded_file($tmpName, $galleryImagePath)) {
                 // Handle successful image upload, e.g., store image path in a database if needed
+                echo "Images Upload successful!";
             } else {
                 // Handle image upload errors
             }
@@ -196,6 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Move the uploaded thumbnail to the target directory
         if (move_uploaded_file($thumbnail['tmp_name'], $thumbnailPath)) {
             // Handle successful thumbnail upload, e.g., associate it with the gallery
+            echo "Thumbnail Upload successful!";
         } else {
             // Handle thumbnail upload errors
         }
