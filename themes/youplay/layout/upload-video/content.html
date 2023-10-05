@@ -137,6 +137,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Move the uploaded files to the dedicated folder
         if (move_uploaded_file($videoFile['tmp_name'], $videoPath) && move_uploaded_file($thumbnailFile['tmp_name'], $thumbnailPath)) {
+
+            $getID3 = new getID3;
+            $video_file = $getID3->analyze($videoPath);
+            $duration_string = $video_file['playtime_string'];
+
+            $fields = array(
+                'user_id' => $pt->user->id,
+                'video_id' => $videoFolderName, // Use the folder name as video_id
+                'title' => $_POST['video-title-input'],
+                'description' => $videoDescription,
+                'thumbnail' => $thumbnailPath, // Store the thumbnail path
+                'video_location' => $videoPath, // Store the video path
+                'size' => filesize($videoPath), // Get the video file size in bytes
+                'duration' => $duration_string,
+                'time' => time()
+            );
+
+            // Insert the data into the 'videos' table
+            $videoSave = $db->insert('videos', $fields);
+            if($videoSave){
+                echo "Video Save Successful";
+            }
+
             // Redirect or display a success message to the user
             echo "Upload successful!";
         } else {
