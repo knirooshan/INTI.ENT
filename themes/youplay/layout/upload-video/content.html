@@ -84,6 +84,7 @@
 <?php
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     $videoForm = $_POST['video_hidden'];
     $galleryForm = $_POST['gallery_hidden'];
     $musicForm = $_POST['music_hidden'];
@@ -108,12 +109,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Handle the video file upload
-
         $videoFile = $_FILES['video-input'];
         $thumbnailFile = $_FILES['video-thumb-input'];
         $videoTitle = $_POST['video-title-input'];
         $videoDescription = $_POST['video-desc-input'];
         $videoTags = $_POST['video-tag-input'];
+
+        // Generate a unique folder name for this video upload
+        $videoFolderName = uniqid();
+
+        // Define the path for the dedicated folder
+        $videoFolderPath = $targetDir . $videoFolderName . '/';
+
+        // Create a dedicated folder for this video upload
+        mkdir($videoFolderPath);
 
         // Generate a unique filename for the video and thumbnail
         $videoFileExtension = pathinfo($videoFile['name'], PATHINFO_EXTENSION);
@@ -122,16 +131,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $videoFileName = uniqid() . '.' . $videoFileExtension;
         $thumbnailFileName = uniqid() . '.' . $thumbnailFileExtension;
 
-        // Define the paths for video and thumbnail
-        $videoPath = $targetDir . $videoFileName;
-        $thumbnailPath = $targetDir . $thumbnailFileName;
+        // Define the paths for video and thumbnail within the dedicated folder
+        $videoPath = $videoFolderPath . $videoFileName;
+        $thumbnailPath = $videoFolderPath . $thumbnailFileName;
 
-
-        // Move the uploaded files to the target directory
+        // Move the uploaded files to the dedicated folder
         if (move_uploaded_file($videoFile['tmp_name'], $videoPath) && move_uploaded_file($thumbnailFile['tmp_name'], $thumbnailPath)) {
-
-
-
             // Redirect or display a success message to the user
             echo "Upload successful!";
         } else {
@@ -204,6 +209,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($musicForm == 3) {
+
+        // Define the target directory for music file uploads
+        $musicUploadDir = 'upload/music/';
+
+        // Create the current year and month directories if they don't exist
+        $musicCurrentYear = date('Y');
+        $musicCurrentMonth = date('m');
+        $musicTargetDir = $musicUploadDir . $musicCurrentYear . '/' . $musicCurrentMonth . '/';
+
+        if (!is_dir($musicTargetDir)) {
+            // Create the year directory if it doesn't exist
+            if (!is_dir($musicUploadDir . $musicCurrentYear)) {
+                mkdir($musicUploadDir . $musicCurrentYear);
+            }
+
+            // Create the month directory
+            mkdir($musicTargetDir);
+        }
+
+        // Handle the music file upload
+        $musicFile = $_FILES['music-input'];
+        $thumbnail = $_FILES['music-thumb-input'];
+
+        // Generate a unique folder name for this music upload
+        $musicFolderName = uniqid();
+        $musicFolderPath = $musicTargetDir . $musicFolderName . '/';
+
+        // Create a dedicated folder for this music upload
+        mkdir($musicFolderPath);
+
+        // Generate a unique filename for the music file
+        $musicFileExtension = pathinfo($musicFile['name'], PATHINFO_EXTENSION);
+        $musicFileName = uniqid() . '.' . $musicFileExtension;
+
+        // Define the path for the music file within the folder
+        $musicFilePath = $musicFolderPath . $musicFileName;
+
+        // Move the uploaded music file to the target directory
+        if (move_uploaded_file($musicFile['tmp_name'], $musicFilePath)) {
+            // Handle successful music file upload, e.g., store file path in a database if needed
+        } else {
+            // Handle music file upload errors
+        }
+
+        // Generate a unique filename for the thumbnail
+        $thumbnailFileExtension = pathinfo($thumbnail['name'], PATHINFO_EXTENSION);
+        $thumbnailFileName = uniqid() . '.' . $thumbnailFileExtension;
+
+        // Define the path for the thumbnail within the folder
+        $thumbnailPath = $musicFolderPath . $thumbnailFileName;
+
+        // Move the uploaded thumbnail to the target directory
+        if (move_uploaded_file($thumbnail['tmp_name'], $thumbnailPath)) {
+            // Handle successful thumbnail upload, e.g., associate it with the music
+            echo "Upload successful!";
+        } else {
+            // Handle thumbnail upload errors
+        }
     }
 }
 
