@@ -146,11 +146,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'user_id' => $pt->user->id,
                 'video_id' => $videoFolderName, // Use the folder name as video_id
                 'title' => $_POST['video-title-input'],
-                'description' => $videoDescription,
+                'description' => $_POST['video-desc-input'],
                 'thumbnail' => $thumbnailPath, // Store the thumbnail path
                 'video_location' => $videoPath, // Store the video path
                 'size' => filesize($videoPath), // Get the video file size in bytes
                 'duration' => $duration_string,
+                'file_type' => 'video',
                 'time' => time()
             );
 
@@ -198,6 +199,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Create a dedicated folder for this gallery
         mkdir($galleryFolderPath);
 
+        $uploadedImagePaths = []; // Initialize an array to store image paths
+
         foreach ($galleryImages['tmp_name'] as $key => $tmpName) {
             // Generate a unique filename for each image
             $galleryImageFileExtension = pathinfo($galleryImages['name'][$key], PATHINFO_EXTENSION);
@@ -209,11 +212,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Move the uploaded image to the target directory
             if (move_uploaded_file($tmpName, $galleryImagePath)) {
                 // Handle successful image upload, e.g., store image path in a database if needed
+
+                $uploadedImagePaths[] = $galleryImagePath;
+
                 echo "Images Upload successful!";
             } else {
                 // Handle image upload errors
             }
         }
+
+        $imagePathsString = implode(',', $uploadedImagePaths);
 
         // Generate a unique filename for the thumbnail
         $thumbnailFileExtension = pathinfo($thumbnail['name'], PATHINFO_EXTENSION);
@@ -225,6 +233,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Move the uploaded thumbnail to the target directory
         if (move_uploaded_file($thumbnail['tmp_name'], $thumbnailPath)) {
             // Handle successful thumbnail upload, e.g., associate it with the gallery
+
+            $fieldsGallery = array(
+                'user_id' => $pt->user->id,
+                'video_id' => $galleryFolderName, // Use the folder name as video_id
+                'title' => $_POST['img-title-input'],
+                'description' => $_POST['img-desc-input'],
+                'thumbnail' => $thumbnailPath, // Store the thumbnail path
+                'video_location' => $imagePathsString, // Store the video path
+                'file_type' => 'gallery',
+                'time' => time()
+            );
+
+            // Insert the data into the 'videos' table
+            $gallerySave = $db->insert('videos', $fieldsGallery);
+            if($gallerySave){
+                echo "Images Save Successful";
+            }
+
             echo "Thumbnail Upload successful!";
         } else {
             // Handle thumbnail upload errors
@@ -286,6 +312,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Move the uploaded thumbnail to the target directory
         if (move_uploaded_file($thumbnail['tmp_name'], $thumbnailPath)) {
             // Handle successful thumbnail upload, e.g., associate it with the music
+
+            $getID3Music = new getID3;
+            $music_file = $getID3Music->analyze($musicFilePath);
+            $duration_music = $music_file['playtime_string'];
+
+            $fieldsMusic = array(
+                'user_id' => $pt->user->id,
+                'video_id' => $musicFolderName, // Use the folder name as video_id
+                'title' => $_POST['music-title-input'],
+                'description' => $_POST['music-desc-input'],
+                'thumbnail' => $thumbnailPath, // Store the thumbnail path
+                'video_location' => $musicFilePath, // Store the video path
+                'size' => filesize($musicFilePath), // Get the video file size in bytes
+                'duration' => $duration_music,
+                'file_type' => 'music',
+                'time' => time()
+            );
+
+            // Insert the data into the 'videos' table
+            $musicSave = $db->insert('videos', $fieldsMusic);
+            if($musicSave){
+                echo "Music Save Successful";
+            }
+
             echo "Upload successful!";
         } else {
             // Handle thumbnail upload errors
