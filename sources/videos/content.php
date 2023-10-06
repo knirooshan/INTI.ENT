@@ -14,6 +14,8 @@ $pages        = array(
     'latest',
     'top',
     'live',
+    'gallery',
+    'music',
     'stock'
 );
 
@@ -54,6 +56,16 @@ else if ($page == 'latest') {
 
     // pagination system 
     $videos = $db->where('privacy', 0)->where('user_id',$pt->blocked_array , 'NOT IN')->where('file_type', 'video')->where('live_time',0)->where('approved',1)->where('is_short', 0)->orderBy('id', 'DESC')->objectbuilder()->paginate(T_VIDEOS, $pt->page_number);
+    $pt->total_pages = $db->totalPages;
+    // pagination system 
+} 
+else if ($page == 'gallery') {
+    $title  = "Gallery";
+    // $db->where('privacy', 0);
+    // $videos = $db->orderBy('id', 'DESC')->get(T_VIDEOS, $limit);
+
+    // pagination system 
+    $videos = $db->where('privacy', 0)->where('user_id',$pt->blocked_array , 'NOT IN')->where('file_type', 'gallery')->where('live_time',0)->where('approved',1)->where('is_short', 0)->orderBy('id', 'DESC')->objectbuilder()->paginate(T_VIDEOS, $pt->page_number);
     $pt->total_pages = $db->totalPages;
     // pagination system 
 } 
