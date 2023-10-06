@@ -229,6 +229,39 @@ foreach ($latest_data as $key => $video) {
     }
 }
 
+$latest_list_gallery = '';
+if (!empty($pro_users)) {
+    $db->where('user_id', $pro_users, 'IN');
+    $db->where('privacy', 0);
+    $db->orderBy('id', 'DESC');
+    $latest_data_gallery = $db->where('is_movie', 0)->where('user_id', $pt->blocked_array, 'NOT IN')->where('approved', 1)->where('is_short', 0)->where('live_time', 0)->get(T_VIDEOS, $limit);
+}
+
+if (empty($latest_data_gallery)) {
+    $db->where('privacy', 0);
+    $latest_data_gallery = $db->where('is_movie', 0)->where('user_id', $pt->blocked_array, 'NOT IN')->where('approved', 1)->where('is_short', 0)->where('live_time', 0)->orderBy('id', 'DESC')->get(T_VIDEOS, $limit);
+}
+
+foreach ($latest_data_gallery as $gallery_key => $video) {
+    if($video->file_type == 'gallery'){
+        $video = $pt->video =  PT_GetVideoByID($video, 0, 0, 0);
+        $latest_list_gallery .= PT_LoadPage('home/list-gallery', array(
+            'ID' => $video->id,
+            'TITLE' => $video->title,
+            'VIEWS' => number_format($video->views),
+            'VIEWS_NUM' => number_format($video->views),
+            'USER_DATA' => $video->owner,
+            'THUMBNAIL' => $video->thumbnail,
+            'URL' => $video->url,
+            'ajax_url' => $video->ajax_url,
+            'TIME' => $video->time_ago,
+            'VIDEO_ID' => $video->video_id_,
+            'VIDEO_ID_' => PT_Slug($video->title, $video->video_id),
+            'GIF' => $video->gif
+        ));
+    }
+}
+
 $video_categories_html = '';
 
 foreach ($categories as $cat_key => $cat_name) {
@@ -396,6 +429,7 @@ $pt->content = PT_LoadPage('home/content', array(
     'TOP_LIST' => $top_list,
     'LIVE_LIST' => $live_list,
     'LATEST_LIST' => $latest_list,
+    'LATEST_LIST_GALLERY' => $latest_list_gallery,
     'HOME_PAGE_VIDEOS' => $video_categories_html,
     'SUBSC_HTML' => $get_subscriptions_videos_html,
     'VIDEO_ID_' => PT_Slug($get_video->title, $get_video->video_id),

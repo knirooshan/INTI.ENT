@@ -53,7 +53,7 @@ else if ($page == 'latest') {
     // $videos = $db->orderBy('id', 'DESC')->get(T_VIDEOS, $limit);
 
     // pagination system 
-    $videos = $db->where('privacy', 0)->where('user_id',$pt->blocked_array , 'NOT IN')->where('is_movie',0)->where('live_time',0)->where('approved',1)->where('is_short', 0)->orderBy('id', 'DESC')->objectbuilder()->paginate(T_VIDEOS, $pt->page_number);
+    $videos = $db->where('privacy', 0)->where('user_id',$pt->blocked_array , 'NOT IN')->where('file_type', 'video')->where('live_time',0)->where('approved',1)->where('is_short', 0)->orderBy('id', 'DESC')->objectbuilder()->paginate(T_VIDEOS, $pt->page_number);
     $pt->total_pages = $db->totalPages;
     // pagination system 
 } 
