@@ -158,6 +158,11 @@
                   <?php } } ?>
                </div>
                <?php }} ?>
+
+               <?php
+               if($pt->get_video->file_type == 'video'){
+               ?>
+
                <video id="my-video<?php if ($pt->config->player_type == 'fluidPlayer' || $pt->config->player_type == 'plyr') { ?>_<?php echo $pt->get_video->id; ?><?php } ?>" controls  <?php if ($pt->config->player_type == 'videojs') { ?>   class="video-js" data-setup=''  <?php } ?> <?php if (empty($pt->ad_image)) { ?>  <?php } ?> style="width:100%; height:100%;position: relative;" poster="{{THUMBNAIL}}" autoplay playsinline>
                   <?php if (!empty($pt->video_4096)) { ?>
                   <source src="{{VIDEO_LOCATION_4096}}" type="{{VIDEO_TYPE}}" data-quality="4K" title='4K' label='4K' res='4096' size='4096'>
@@ -186,6 +191,33 @@
                   Your browser does not support HTML5 video.
                   <!-- //src="http://www.youtube.com/watch?v=nOEw9iiopwI" type="video/youtube" -->
                </video>
+
+               <?php
+               }
+               ?>
+
+               <?php
+               if($pt->get_video->file_type == 'gallery'){
+               ?>
+
+               <p>Hello There</p>
+
+               <?php
+               }
+               ?>
+
+               <?php
+               if($pt->get_video->file_type == 'music'){
+               ?>
+               
+               <audio controls>
+                  <source src="{{VIDEO_LOCATION}}">
+               </audio>
+
+               <?php
+               }
+               ?>
+
                <?php if (!empty($pt->ad_image)) { ?>
                <a href="{{AD_P_LINK}}" class="ad-link" target="_blank">
                   <div class="ad-image">

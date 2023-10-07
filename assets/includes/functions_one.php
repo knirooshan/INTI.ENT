@@ -326,11 +326,36 @@ function PT_GetVideoByID($video_id = '', $add_views = 0, $likes_dislikes = 0, $r
             $get_video->video_id_  = $get_video->twitch;
             $get_video->source         = 'Twitch';
         }
+
         $get_video->url                = PT_Link('watch/' . $get_video->video_id);
         $get_video->ajax_url                = '?link1=watch&id='.$get_video->video_id;
+
+        // if($get_video->file_type == 'video'){
+        //     $get_video->url                = PT_Link('watch/' . $get_video->video_id);
+        //     $get_video->ajax_url                = '?link1=watch&id='.$get_video->video_id;
+        // }else if($get_video->file_type == 'gallery'){
+        //     $get_video->url                = PT_Link('watch/gallery/' . $get_video->video_id);
+        //     $get_video->ajax_url                = '?link1=watch&id='.$get_video->video_id;
+        // }else{
+        //     $get_video->url                = PT_Link('watch/music/' . $get_video->video_id);
+        //     $get_video->ajax_url                = '?link1=watch&id='.$get_video->video_id;
+        // }
+
         if ($pt->config->seo_link == 'on') {
+
             $get_video->url                = PT_Link('watch/' . PT_Slug($get_video->title, $get_video->video_id));
             $get_video->ajax_url = '?link1=watch&id='.PT_Slug($get_video->title, $get_video->video_id);
+
+            // if($get_video->file_type == 'video'){
+            //     $get_video->url                = PT_Link('watch/' . PT_Slug($get_video->title, $get_video->video_id));
+            //     $get_video->ajax_url = '?link1=watch&id='.PT_Slug($get_video->title, $get_video->video_id);
+            // }else if($get_video->file_type == 'gallery'){
+            //     $get_video->url                = PT_Link('watch/gallery/' . PT_Slug($get_video->title, $get_video->video_id));
+            //     $get_video->ajax_url = '?link1watch&id='.PT_Slug($get_video->title, $get_video->video_id);
+            // }else{
+            //     $get_video->url                = PT_Link('watch/music/' . PT_Slug($get_video->title, $get_video->video_id));
+            //     $get_video->ajax_url = '?link1=watch/music&id='.PT_Slug($get_video->title, $get_video->video_id);
+            // }
         }
         if ($get_video->is_short == 1) {
             $get_video->url                = PT_Link('shorts/' . $get_video->video_id);

@@ -1022,6 +1022,7 @@ $pt->content = PT_LoadPage("watch/$content_page", array(
     'TITLE' => $get_video->title,
     'DESC' => $get_video->markup_description,
     'URL' => $get_video->url,
+    'FILE_TYPE' => $get_video->file_type,
     'VIDEO_LOCATION_240' => $pt->video_240,
     'VIDEO_LOCATION' => $get_video->video_location,
     'VIDEO_LOCATION_360' => $pt->video_360,

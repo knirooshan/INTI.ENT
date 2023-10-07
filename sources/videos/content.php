@@ -11,7 +11,7 @@ $pt->exp_feed = true;
 $pages        = array(
     'trending',
     'category',
-    'latest',
+    'videos',
     'top',
     'live',
     'gallery',
@@ -34,7 +34,7 @@ if (!empty($_GET['feed']) && $_GET['feed'] == 'rss') {
     $pt->rss_feed = true;
 
 }
-$pt->page_url_ = $pt->config->site_url.'/videos/'.$page.'?page_id='.$pt->page_number;
+$pt->page_url_ = $pt->config->site_url."/".$page.'?page_id='.$pt->page_number;
 $cateogry_id = '';
 $videos = array();
 $pt->stock_link = "";
@@ -49,8 +49,8 @@ if ($page == 'trending') {
     // pagination system 
 } 
 
-else if ($page == 'latest') {
-    $title  = $lang->latest_videos;
+else if ($page == 'videos') {
+    $title  = "Videos";
     // $db->where('privacy', 0);
     // $videos = $db->orderBy('id', 'DESC')->get(T_VIDEOS, $limit);
 
@@ -69,6 +69,16 @@ else if ($page == 'gallery') {
     $pt->total_pages = $db->totalPages;
     // pagination system 
 } 
+else if ($page == 'music') {
+    $title  = "Musics";
+    // $db->where('privacy', 0);
+    // $videos = $db->orderBy('id', 'DESC')->get(T_VIDEOS, $limit);
+
+    // pagination system 
+    $videos = $db->where('privacy', 0)->where('user_id',$pt->blocked_array , 'NOT IN')->where('file_type', 'music')->where('live_time',0)->where('approved',1)->where('is_short', 0)->orderBy('id', 'DESC')->objectbuilder()->paginate(T_VIDEOS, $pt->page_number);
+    $pt->total_pages = $db->totalPages;
+    // pagination system 
+}
 else if ($page == 'live') {
     $title  = $lang->live_videos;
     // $db->where('privacy', 0);
@@ -295,25 +305,69 @@ if (!empty($videos)) {
         elseif ($page == 'top' && !empty($pt->cat_type) && $pt->cat_type == 'all_time') {
             $video = $pt->video = PT_GetVideoByID($video, 0, 0, 0);
         }
-        	
-        $html_videos .= PT_LoadPage('videos/list', array(
-            'ID' => $video->id,
-            'VID_ID' => $video->id,
-	        'TITLE' => $video->title,
-	        'VIEWS' => $video->views,
-            'VIEWS_NUM' => number_format($video->views),
-	        'USER_DATA' => $video->owner,
-	        'THUMBNAIL' => $video->thumbnail,
-	        'URL' => $video->url,
-            'ajax_url' => $video->ajax_url,
-	        'TIME' => $video->time_ago,
-            'DURATION' => $video->duration,
-            'VIDEO_ID_' => PT_Slug($video->title, $video->video_id),
-            'GIF' => $video->gif,
-            'DESC' => $video->markup_description,
-            'PRICE' => $video->sell_video,
-            'CURRENCY' => $pt->config->main_payment_currency,
-        ));
+        
+        if($video->file_type == 'video'){
+            $html_videos .= PT_LoadPage('videos/list', array(
+                'ID' => $video->id,
+                'VID_ID' => $video->id,
+                'TITLE' => $video->title,
+                'VIEWS' => $video->views,
+                'VIEWS_NUM' => number_format($video->views),
+                'USER_DATA' => $video->owner,
+                'THUMBNAIL' => $video->thumbnail,
+                'URL' => $video->url,
+                'ajax_url' => $video->ajax_url,
+                'TIME' => $video->time_ago,
+                'DURATION' => $video->duration,
+                'VIDEO_ID_' => PT_Slug($video->title, $video->video_id),
+                'GIF' => $video->gif,
+                'DESC' => $video->markup_description,
+                'PRICE' => $video->sell_video,
+                'CURRENCY' => $pt->config->main_payment_currency,
+            ));
+        }
+
+        if($video->file_type == 'gallery'){
+            $html_videos .= PT_LoadPage('galleries/list', array(
+                'ID' => $video->id,
+                'VID_ID' => $video->id,
+                'TITLE' => $video->title,
+                'VIEWS' => $video->views,
+                'VIEWS_NUM' => number_format($video->views),
+                'USER_DATA' => $video->owner,
+                'THUMBNAIL' => $video->thumbnail,
+                'URL' => $video->url,
+                'ajax_url' => $video->ajax_url,
+                'TIME' => $video->time_ago,
+                'DURATION' => $video->duration,
+                'VIDEO_ID_' => PT_Slug($video->title, $video->video_id),
+                'GIF' => $video->gif,
+                'DESC' => $video->markup_description,
+                'PRICE' => $video->sell_video,
+                'CURRENCY' => $pt->config->main_payment_currency,
+            ));
+        }
+
+        if($video->file_type == 'music'){
+            $html_videos .= PT_LoadPage('musics/list', array(
+                'ID' => $video->id,
+                'VID_ID' => $video->id,
+                'TITLE' => $video->title,
+                'VIEWS' => $video->views,
+                'VIEWS_NUM' => number_format($video->views),
+                'USER_DATA' => $video->owner,
+                'THUMBNAIL' => $video->thumbnail,
+                'URL' => $video->url,
+                'ajax_url' => $video->ajax_url,
+                'TIME' => $video->time_ago,
+                'DURATION' => $video->duration,
+                'VIDEO_ID_' => PT_Slug($video->title, $video->video_id),
+                'GIF' => $video->gif,
+                'DESC' => $video->markup_description,
+                'PRICE' => $video->sell_video,
+                'CURRENCY' => $pt->config->main_payment_currency,
+            ));
+        }
     }
 }
 if (empty($videos) || empty(ToArray($videos))) {

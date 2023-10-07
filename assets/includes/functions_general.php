@@ -108,7 +108,7 @@ function PT_Slug($string, $video_id) {
             '/\b(example)\b/i' => 'Test'
         )
     ));
-    return $slug . '_' . $video_id . '.html';
+    return $slug . '_' . $video_id;
 }
 function PT_URLSlug($string, $id) {
     global $pt;
