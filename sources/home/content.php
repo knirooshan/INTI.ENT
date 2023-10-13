@@ -278,7 +278,7 @@ if (empty($latest_data_music)) {
 foreach ($latest_data_music as $gallery_key => $video) {
     if($video->file_type == 'music'){
         $video = $pt->video =  PT_GetVideoByID($video, 0, 0, 0);
-        $latest_list_music .= PT_LoadPage('home/list', array(
+        $latest_list_music .= PT_LoadPage('home/list-music', array(
             'ID' => $video->id,
             'TITLE' => $video->title,
             'VIEWS' => number_format($video->views),
