@@ -11,11 +11,11 @@ $pt->exp_feed = true;
 $pages        = array(
     'trending',
     'category',
-    'videos',
+    'latest',
     'top',
     'live',
-    'gallery',
-    'music',
+    'galleries',
+    'musics',
     'stock'
 );
 
@@ -34,7 +34,7 @@ if (!empty($_GET['feed']) && $_GET['feed'] == 'rss') {
     $pt->rss_feed = true;
 
 }
-$pt->page_url_ = $pt->config->site_url."/".$page.'?page_id='.$pt->page_number;
+$pt->page_url_ = $pt->config->site_url."/videos/".$page.'?page_id='.$pt->page_number;
 $cateogry_id = '';
 $videos = array();
 $pt->stock_link = "";
@@ -49,7 +49,7 @@ if ($page == 'trending') {
     // pagination system 
 } 
 
-else if ($page == 'videos') {
+else if ($page == 'latest') {
     $title  = "Videos";
     // $db->where('privacy', 0);
     // $videos = $db->orderBy('id', 'DESC')->get(T_VIDEOS, $limit);
@@ -59,7 +59,7 @@ else if ($page == 'videos') {
     $pt->total_pages = $db->totalPages;
     // pagination system 
 } 
-else if ($page == 'gallery') {
+else if ($page == 'galleries') {
     $title  = "Gallery";
     // $db->where('privacy', 0);
     // $videos = $db->orderBy('id', 'DESC')->get(T_VIDEOS, $limit);
@@ -69,7 +69,7 @@ else if ($page == 'gallery') {
     $pt->total_pages = $db->totalPages;
     // pagination system 
 } 
-else if ($page == 'music') {
+else if ($page == 'musics') {
     $title  = "Musics";
     // $db->where('privacy', 0);
     // $videos = $db->orderBy('id', 'DESC')->get(T_VIDEOS, $limit);
