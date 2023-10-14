@@ -296,7 +296,7 @@ function PT_GetVideoByID($video_id = '', $add_views = 0, $likes_dislikes = 0, $r
             }
 
             else{
-                $get_video->video_location = PT_GetMedia($get_video->video_location);
+                $get_video->video_location = PT_GetMedia($get_video->video_location, $get_video->file_type);
             }
 
         }
@@ -422,13 +422,25 @@ function addhttp($url) {
     }
     return $url;
 }
-function PT_GetMedia($media = '', $is_upload = false){
+function PT_GetMedia($media = '', $file_type = '', $is_upload = false){
     global $pt;
     if (empty($media)) {
         return '';
     }
 
-    $media_url     = $pt->config->site_url . '/' . $media;
+    if ($file_type == 'gallery') {
+        $allImages = explode(',', $media);
+        $media_url = $pt->config->site_url . '/';
+        $media_urls = array();
+    
+        foreach ($allImages as $image) {
+            $media_urls[] = $media_url . $image;
+        }
+        $media_url = implode(',', $media_urls);
+    }else{
+        $media_url     = $pt->config->site_url . '/' . $media;
+    }
+    
     if ($pt->config->s3_upload == 'on' && $is_upload == false) {
         $media_url = "https://" . $pt->config->s3_bucket_name . ".s3.amazonaws.com/" . $media;
         if (!empty($pt->config->amazon_endpoint) && filter_var($pt->config->amazon_endpoint, FILTER_VALIDATE_URL)) {

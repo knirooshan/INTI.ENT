@@ -738,7 +738,7 @@ if ($pt->config->ffmpeg_system == 'on') {
             $pt->video_res = '240';
             $quality_set = true;
         }
-        $get_video->video_location = PT_GetMedia($get_video->demo);
+        $get_video->video_location = PT_GetMedia($get_video->demo, $get_video->file_type);
     }
     elseif ($pt->get_video->rent_price == 0 || PT_IsAdmin() || $pt->get_video->is_owner || ($pt->get_video->rent_price > 0 && $pt->is_paid > 0 && $pt->config->rent_videos_system == 'on')) {
         if ($get_video->{"240p"} == 1) {
@@ -800,11 +800,11 @@ if ($pt->config->ffmpeg_system == 'on') {
             $pt->video_res = '240';
             $quality_set = true;
         }
-        $get_video->video_location = PT_GetMedia($get_video->demo);
+        $get_video->video_location = PT_GetMedia($get_video->demo, $get_video->file_type);
     }
 
     if ($pt->config->stock_videos == 'on' && !empty($get_video->demo) && !empty($get_video->sell_video) && $get_video->is_stock == 1 && !$pt->is_paid && !$pt->video_owner) {
-        $get_video->video_location = PT_GetMedia($get_video->demo);
+        $get_video->video_location = PT_GetMedia($get_video->demo, $get_video->file_type);
         $pt->video_240 = 0;
         $pt->video_360 = 0;
         $pt->video_480 = 0;
@@ -852,7 +852,7 @@ else{
             $pt->video_res = '240';
             $quality_set = true;
         }
-        $get_video->video_location = PT_GetMedia($get_video->demo);
+        $get_video->video_location = PT_GetMedia($get_video->demo, $get_video->file_type);
     }
     elseif ($pt->get_video->rent_price > 0 && !$pt->is_paid && $pt->config->rent_videos_system == 'on' && !empty($get_video->demo)) {
         $quality_set = false;
@@ -891,7 +891,7 @@ else{
             $pt->video_res = '240';
             $quality_set = true;
         }
-        $get_video->video_location = PT_GetMedia($get_video->demo);
+        $get_video->video_location = PT_GetMedia($get_video->demo, $get_video->file_type);
     }
 }
 // demo video
