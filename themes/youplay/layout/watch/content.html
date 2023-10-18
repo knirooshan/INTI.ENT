@@ -293,12 +293,12 @@
                <style>
 
                   .carousel-item{
-                     height: 360px!important;
+                     height: 480px!important;
                   }
 
                   .carousel-item img{
-                     width: 100%!important;
-                     object-fit: cover;
+                     height: 100%!important;
+                     object-fit: contain;
                      object-position: center center;
                   }
 
@@ -338,6 +338,10 @@
                if($pt->get_video->file_type == 'music'){
                ?>
 
+               <div class="carousel-item">
+                  <img class="d-block w-100" src="{{THUMBNAIL}}" alt="Thumbnail">
+               </div>
+               
                <audio controls>
                   <source src="{{VIDEO_LOCATION}}">
                </audio>
@@ -347,7 +351,7 @@
                ?>
 
                <?php if ($pt->config->resize_video == 'on') { ?>
-               <div class="icons hidde">
+               <div class="icons hidden">
                   <span class="expend-player">
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path fill="currentColor"
@@ -701,7 +705,7 @@
          <?php } ?>
       </div>
       <?php if (!$pt->is_movie) { ?>
-      <div class="col-md-8 ">
+      <div class="col-md-8 custom-css-class">
          <div class="content pt_shadow">
             <div class="video-title pt_video_info">
                <input type="hidden" value="{{ID}}" id="video-id">
