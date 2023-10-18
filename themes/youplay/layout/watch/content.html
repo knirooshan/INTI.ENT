@@ -226,42 +226,9 @@
                   controls <?php if ($pt->config->player_type == 'videojs') { ?> class="video-js" data-setup=''
                   <?php } ?>
                   <?php if (empty($pt->ad_image)) { ?>
-                  <?php } ?> style="width:100%; height:100%;position: relative;" poster="{{THUMBNAIL}}" autoplay
+                  <?php } ?> style="width:100%; height:100%;position: relative;" poster="<?php echo $pt->config->site_url . '/' . $pt->get_video->thumbnail ?>" autoplay
                   playsinline>
-                  <?php if (!empty($pt->video_4096)) { ?>
-                  <source src="{{VIDEO_LOCATION_4096}}" type="{{VIDEO_TYPE}}" data-quality="4K" title='4K' label='4K'
-                     res='4096' size='4096'>
-                  <?php } ?>
-                  <?php if (!empty($pt->video_2048)) { ?>
-                  <source src="{{VIDEO_LOCATION_2048}}" type="{{VIDEO_TYPE}}" data-quality="2K" title='2K' label='2K'
-                     res='2048' size='2048'>
-                  <?php } ?>
-                  <?php if (!empty($pt->video_1080)) { ?>
-                  <source src="{{VIDEO_LOCATION_1080}}" type="{{VIDEO_TYPE}}" data-quality="1080p" title='1080p'
-                     label='1080p' res='1080' size='1080'>
-                  <?php } ?>
-                  <?php if (!empty($pt->video_720)) { ?>
-                  <source src="{{VIDEO_LOCATION_720}}" type="{{VIDEO_TYPE}}" data-quality="720p" title='720p'
-                     label='720p' res='720' size='720'>
-                  <?php } ?>
-                  <?php if (!empty($pt->video_480)) { ?>
-                  <source src="{{VIDEO_LOCATION_480}}" type="{{VIDEO_TYPE}}" data-quality="480p" title='480p'
-                     label='480p' res='480' size='480'>
-                  <?php } ?>
-                  <?php if (!empty($pt->video_360)) { ?>
-                  <source src="{{VIDEO_LOCATION_360}}" type="{{VIDEO_TYPE}}" data-quality="360p" title='360p'
-                     label='360p' res='360' size='360'>
-                  <?php } ?>
-                  <?php if (!empty($pt->video_240)) { ?>
-                  <source src="{{VIDEO_LOCATION_240}}" type="{{VIDEO_TYPE}}" data-quality="240p" title='240p'
-                     label='240p' res='240' size='240'>
-                  <?php } ?>
-                  <?php if (!empty($pt->get_video->youtube) || (!empty($pt->get_video->video_location) && empty($pt->video_240))) { ?>
-                  <source src="{{VIDEO_LOCATION}}" type="{{VIDEO_TYPE}}" data-quality="HD" title='HD' label='HD'
-                     res='<?php echo(!empty($pt->video_res) ? $pt->video_res : ' 360') ?>'>
-                  <?php } ?>
-                  Your browser does not support HTML5 video.
-                  <!-- //src="http://www.youtube.com/watch?v=nOEw9iiopwI" type="video/youtube" -->
+                  <source src="<?php echo $pt->config->site_url . '/' . $pt->get_video->video_location ?>" type="{{VIDEO_TYPE}}" title="{{TITLE}}">
                </video>
 
                <?php
@@ -291,20 +258,18 @@
                   crossorigin="anonymous"></script>
 
                <style>
-
-                  .carousel-item{
-                     height: 480px!important;
+                  .carousel-item {
+                     height: 480px !important;
                   }
 
-                  .carousel-item img{
-                     height: 100%!important;
+                  .carousel-item img {
+                     height: 100% !important;
                      object-fit: contain;
                      object-position: center center;
                   }
-
                </style>
 
-               
+
 
                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="1000000">
                   <div class="carousel-inner">
@@ -338,13 +303,17 @@
                if($pt->get_video->file_type == 'music'){
                ?>
 
-               <div class="carousel-item">
-                  <img class="d-block w-100" src="{{THUMBNAIL}}" alt="Thumbnail">
+               <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="1000000">
+                  <div class="carousel-inner">
+                     <div class="carousel-item active" style="position: relative;">
+                        <img class="d-block w-100"
+                           src="<?php echo $pt->config->site_url . '/' . $pt->get_video->thumbnail ?>" alt="Thumbnail">
+                        <audio style="position: absolute; bottom: 25px; left: 0; right: 0; margin: auto;" controls>
+                           <source src="<?php echo $pt->config->site_url . '/' . $pt->get_video->video_location ?>">
+                        </audio>
+                     </div>
+                  </div>
                </div>
-               
-               <audio controls>
-                  <source src="{{VIDEO_LOCATION}}">
-               </audio>
 
                <?php
                }
@@ -694,7 +663,8 @@
 
                      </h4>
                      <div class="checkbox checkbox-info">
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{VID_INDEX}}/{{LIST_COUNT}} {{LANG
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{VID_INDEX}}/{{LIST_COUNT}}
+                        {{LANG
                         videos}}</div>
                   </div>
                </div>
@@ -1398,7 +1368,8 @@
                            onclick="OpenShareWindow('https://www.facebook.com/sharer/sharer.php?u={{ENCODED_URL}}')"></a>
                      </div>
                      <div><a href="#" class="fa fa-twitter"
-                           onclick="OpenShareWindow('https://twitter.com/intent/tweet?url={{ENCODED_URL}}')"></a></div>
+                           onclick="OpenShareWindow('https://twitter.com/intent/tweet?url={{ENCODED_URL}}')"></a>
+                     </div>
                      <div><a href="#" class="fa fa-google"
                            onclick="OpenShareWindow('https://plus.google.com/share?url={{ENCODED_URL}}')"></a></div>
                      <div><a href="#" class="fa fa-linkedin"
