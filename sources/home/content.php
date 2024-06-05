@@ -296,6 +296,39 @@ foreach ($latest_data_music as $gallery_key => $video) {
     }
 }
 
+$latest_list_comic = '';
+if (!empty($pro_users)) {
+    $db->where('user_id', $pro_users, 'IN');
+    $db->where('privacy', 0);
+    $db->orderBy('id', 'DESC');
+    $latest_data_comic = $db->where('is_movie', 0)->where('user_id', $pt->blocked_array, 'NOT IN')->where('approved', 1)->where('is_short', 0)->where('live_time', 0)->get(T_VIDEOS, $limit);
+}
+
+if (empty($latest_data_comic)) {
+    $db->where('privacy', 0);
+    $latest_data_comic = $db->where('is_movie', 0)->where('user_id', $pt->blocked_array, 'NOT IN')->where('approved', 1)->where('is_short', 0)->where('live_time', 0)->orderBy('id', 'DESC')->get(T_VIDEOS, $limit);
+}
+
+foreach ($latest_data_comic as $comic_key => $video) {
+    if ($video->file_type == 'comic') {
+        $video = $pt->video =  PT_GetVideoByID($video, 0, 0, 0);
+        $latest_list_comic .= PT_LoadPage('home/list-gallery', array(
+            'ID' => $video->id,
+            'TITLE' => $video->title,
+            'VIEWS' => number_format($video->views),
+            'VIEWS_NUM' => number_format($video->views),
+            'USER_DATA' => $video->owner,
+            'THUMBNAIL' => $video->thumbnail,
+            'URL' => $video->url,
+            'ajax_url' => $video->ajax_url,
+            'TIME' => $video->time_ago,
+            'VIDEO_ID' => $video->video_id_,
+            'VIDEO_ID_' => PT_Slug($video->title, $video->video_id),
+            'GIF' => $video->gif
+        ));
+    }
+}
+
 $video_categories_html = '';
 
 foreach ($categories as $cat_key => $cat_name) {

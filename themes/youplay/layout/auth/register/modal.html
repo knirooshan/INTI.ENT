@@ -49,6 +49,10 @@
 								<option value="female">{{LANG female}}</option>
 							</select>
 						</div>
+                        <div class="pp_mat_input">
+                            <input type="date" name="dob" id="dob" placeholder="Select Date of Birth" required>
+                            <label for="dob">Date of Birth</label>
+                        </div>
 						<?php 
 						$pt->custom_fields = $db->where('registration_page','1')->get(T_FIELDS);
 						if (!empty($pt->custom_fields)) {
@@ -242,7 +246,7 @@
 				}
 			});
 			$('.button').on('click', function () {
-				if ($('#username').val() && $('#password').val() && $('#email').val() && $('#gender').val() && $('#c_password').val()) {
+				if ($('#username').val() && $('#password').val() && $('#email').val() && $('#gender').val() && $('#c_password').val() && $('#dob').val()) {
 					$(this).val("{{LANG please_wait}}");
 				}
 			});

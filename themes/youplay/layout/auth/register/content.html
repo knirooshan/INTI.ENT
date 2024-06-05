@@ -47,6 +47,10 @@
 						<option value="female">{{LANG female}}</option>
 					</select>
 				</div>
+                <div class="pp_mat_input">
+                    <input type="date" name="dob"  id="dob" placeholder="Select Date of Birth" required>
+                    <label for="dob">Date of Birth</label>
+                </div>
 				{{CUSTOM_FIELDS}}
 				<div class="recaptcha">{{RECAPTCHA}}</div>
 				<div class="login_signup_combo">
@@ -207,7 +211,7 @@ $(function() {
 	    }
 	});
 	$('.button').on('click', function () {
-		if ($('#username').val() && $('#password').val() && $('#email').val() && $('#gender').val() && $('#c_password').val()) {
+		if ($('#username').val() && $('#password').val() && $('#email').val() && $('#gender').val() && $('#c_password').val() && $('#dob').val()) {
 			$(this).val("{{LANG please_wait}}");
 		}
 	});

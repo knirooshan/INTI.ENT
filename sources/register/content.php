@@ -51,7 +51,7 @@ if (!empty($_POST)) {
             $errors = $lang->username_invalid_characters;
         }
     }
-    if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['email']) || empty($_POST['c_password']) || empty($_POST['gender'])) {
+    if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['email']) || empty($_POST['c_password']) || empty($_POST['gender']) || empty($_POST['dob'])) {
         $errors[] = $lang->please_check_details;
     } else {
         $username        = PT_Secure($_POST['username']);
@@ -60,6 +60,7 @@ if (!empty($_POST)) {
         $password_hashed = password_hash($password, PASSWORD_DEFAULT);
         $email           = PT_Secure($_POST['email']);
         $gender          = PT_Secure($_POST['gender']);
+        $dob             = PT_Secure($_POST['dob']);
         if ($gender != 'female' && $gender != 'male') {
             $errors[] = $lang->gender_is_invalid;
         }
@@ -126,6 +127,7 @@ if (!empty($_POST)) {
                 'email' => $email,
                 'ip_address' => get_ip_address(),
                 'gender' => $gender,
+                'dob' => $dob,
                 'active' => $active,
                 'email_code' => $email_code,
                 'last_active' => time(),

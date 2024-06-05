@@ -16,6 +16,7 @@ $pages        = array(
     'live',
     'galleries',
     'musics',
+    'comics',
     'stock'
 );
 
@@ -76,6 +77,16 @@ else if ($page == 'musics') {
 
     // pagination system 
     $videos = $db->where('privacy', 0)->where('user_id',$pt->blocked_array , 'NOT IN')->where('file_type', 'music')->where('live_time',0)->where('approved',1)->where('is_short', 0)->orderBy('id', 'DESC')->objectbuilder()->paginate(T_VIDEOS, $pt->page_number);
+    $pt->total_pages = $db->totalPages;
+    // pagination system 
+}
+else if ($page == 'comics') {
+    $title  = "Comics";
+    // $db->where('privacy', 0);
+    // $videos = $db->orderBy('id', 'DESC')->get(T_VIDEOS, $limit);
+
+    // pagination system 
+    $videos = $db->where('privacy', 0)->where('user_id', $pt->blocked_array, 'NOT IN')->where('file_type', 'comic')->where('live_time', 0)->where('approved', 1)->where('is_short', 0)->orderBy('id', 'DESC')->objectbuilder()->paginate(T_VIDEOS, $pt->page_number);
     $pt->total_pages = $db->totalPages;
     // pagination system 
 }
@@ -368,10 +379,31 @@ if (!empty($videos)) {
                 'CURRENCY' => $pt->config->main_payment_currency,
             ));
         }
+
+        if ($video->file_type == 'comic') {
+            $html_videos .= PT_LoadPage('galleries/list', array(
+                'ID' => $video->id,
+                'VID_ID' => $video->id,
+                'TITLE' => $video->title,
+                'VIEWS' => $video->views,
+                'VIEWS_NUM' => number_format($video->views),
+                'USER_DATA' => $video->owner,
+                'THUMBNAIL' => $video->thumbnail,
+                'URL' => $video->url,
+                'ajax_url' => $video->ajax_url,
+                'TIME' => $video->time_ago,
+                'DURATION' => $video->duration,
+                'VIDEO_ID_' => PT_Slug($video->title, $video->video_id),
+                'GIF' => $video->gif,
+                'DESC' => $video->markup_description,
+                'PRICE' => $video->sell_video,
+                'CURRENCY' => $pt->config->main_payment_currency,
+            ));
+        }
     }
 }
 if (empty($videos) || empty(ToArray($videos))) {
-	$html_videos = '<div class="text-center no-content-found empty_state"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-video-off"><path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m5.66 0H14a2 2 0 0 1 2 2v3.34l1 1L23 7v10"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>' . $lang->no_videos_found_for_now . '</div>';
+	$html_videos = '<div class="text-center no-content-found empty_state"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-video-off"><path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2m5.66 0H14a2 2 0 0 1 2 2v3.34l1 1L23 7v10"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>No Content Found</div>';
 }
 $pt->videos_count= count(ToArray($videos));
 $pt->page        = $page;
