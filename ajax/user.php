@@ -227,6 +227,7 @@ if ($first == 'general') {
                 $update_data = array(
                     'username' => PT_Secure($_POST['username']),
                     'gender' => PT_Secure($gender),
+                    'dob' => PT_Secure($_POST['dob']),
                     'country_id' => PT_Secure($_POST['country']),
                     'active' => PT_Secure($active),
                     'admin' => PT_Secure($type),
